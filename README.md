@@ -18,12 +18,13 @@ def run_command(cmd):
         print(str(e))
 
 def main():
-    if len(sys.argv) != 3:
-        print("Usage: python3 adv_checker.py <adv|priceband|sov|pricelimit> <YYYY-MM-DD>")
+    if len(sys.argv) != 4:
+        print("Usage: python3 adv_checker.py <adv|priceband|sov|pricelimit> <YYYY-MM-DD> <order_id>")
         sys.exit(1)
 
     search_type = sys.argv[1].lower()
     date_str = sys.argv[2]
+    order_id = sys.argv[3]
 
     try:
         date = datetime.strptime(date_str, "%Y-%m-%d")
@@ -31,11 +32,11 @@ def main():
         print("Date must be in YYYY-MM-DD format.")
         sys.exit(1)
 
-    early = date.strftime("%m/%d/%Y") + ":00:00:00"
-    late = date.strftime("%m/%d/%Y") + ":23:00:00"
-    order_id = "ABFD1"  # Replace or pass this dynamically if needed
+    # Adjusted date format with your specifications
+    early = date.strftime("%m-%d-%Y") + ":00:00:00"
+    late = date.strftime("%m-%d-%Y") + ":23:00:00"
 
-    search_query = f'"{order_id} source IN (*SHERLOCK*) | reverse" -sst adv -early {early} -late {late'
+    search_query = f'"{order_id} source IN (*SHERLOCK*) | reverse" -sst adv -early {early} -late {late}'
 
     grep_map = {
         "adv": 'grep "PASS:.*ADV"',
@@ -54,7 +55,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+```
 
 
 ```
